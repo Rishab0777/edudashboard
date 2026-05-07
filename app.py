@@ -554,3 +554,372 @@ elif page == "Donor Monitoring":
         donor,
         use_container_width=True
     )
+
+
+# =========================================================
+# DEVICE HEALTH MONITORING
+# =========================================================
+
+elif page == "Device Health Monitoring":
+
+    st.markdown("## Device Health Monitoring")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        fig = px.pie(
+            device_health,
+            names="status",
+            title="Device Status Distribution",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig, use_container_width=True)
+
+    with col2:
+
+        fig2 = px.bar(
+            device_health,
+            x="device_id",
+            y="battery_health",
+            color="status",
+            title="Battery Health by Device",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig2, use_container_width=True)
+
+    st.markdown("### Device Details")
+
+    st.dataframe(device_health)
+    
+# =========================================================
+# INTERNET MONITORING
+# =========================================================
+
+elif page == "Internet Monitoring":
+
+    st.markdown("## Internet Monitoring Dashboard")
+
+    stable_count = internet[internet["status"] == "Stable"].shape[0]
+
+    unstable_count = internet[
+        internet["status"] == "Unstable"
+    ].shape[0]
+
+    critical_count = internet[
+        internet["status"] == "Critical"
+    ].shape[0]
+
+    avg_uptime = round(
+        internet["internet_uptime"].mean(),
+        2
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Uptime</div>
+            <div class="kpi-value">{avg_uptime}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Stable Schools</div>
+            <div class="kpi-value">{stable_count}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Unstable Schools</div>
+            <div class="kpi-value">{unstable_count}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Critical Schools</div>
+            <div class="kpi-value">{critical_count}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Internet Uptime by School")
+
+        fig1 = px.bar(
+            internet,
+            x="school_name",
+            y="internet_uptime",
+            color="status",
+            template="plotly_white"
+        )
+
+        fig1.update_layout(height=420)
+
+        st.plotly_chart(
+            fig1,
+            use_container_width=True
+        )
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with c2:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Average Internet Speed")
+
+        fig2 = px.line(
+            internet,
+            x="school_name",
+            y="avg_speed_mbps",
+            markers=True,
+            template="plotly_white"
+        )
+
+        fig2.update_layout(height=420)
+
+        st.plotly_chart(
+            fig2,
+            use_container_width=True
+        )
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("### Internet Monitoring Details")
+
+    st.dataframe(
+        internet,
+        use_container_width=True
+    )
+
+# =========================================================
+# COMPLAINT TRACKING
+# =========================================================
+
+elif page == "Complaint Tracking":
+
+    st.markdown("## Complaint Tracking Dashboard")
+
+    open_tickets = complaints[
+        complaints["status"] == "Open"
+    ].shape[0]
+
+    resolved_tickets = complaints[
+        complaints["status"] == "Resolved"
+    ].shape[0]
+
+    avg_days = round(
+        complaints["days_open"].mean(),
+        1
+    )
+
+    high_priority = complaints[
+        complaints["priority"] == "High"
+    ].shape[0]
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Open Tickets</div>
+            <div class="kpi-value">{open_tickets}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Resolved Tickets</div>
+            <div class="kpi-value">{resolved_tickets}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Days Open</div>
+            <div class="kpi-value">{avg_days}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">High Priority Issues</div>
+            <div class="kpi-value">{high_priority}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Complaint Status")
+
+        fig1 = px.pie(
+            complaints,
+            names="status",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig1, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with c2:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Ticket Aging Analysis")
+
+        fig2 = px.bar(
+            complaints,
+            x="ticket_id",
+            y="days_open",
+            color="priority",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("### Complaint Details")
+
+    st.dataframe(
+        complaints,
+        use_container_width=True
+    )
+
+# =========================================================
+# PROJECT HEALTH CENTER
+# =========================================================
+
+elif page == "Project Health Center":
+
+    st.markdown("## Project Health Center")
+
+    excellent = project_health[
+        project_health["overall_health"] == "Excellent"
+    ].shape[0]
+
+    good = project_health[
+        project_health["overall_health"] == "Good"
+    ].shape[0]
+
+    critical = project_health[
+        project_health["overall_health"] == "Critical"
+    ].shape[0]
+
+    avg_engagement = round(
+        project_health["student_engagement"].mean(),
+        1
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Excellent Projects</div>
+            <div class="kpi-value">{excellent}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Good Projects</div>
+            <div class="kpi-value">{good}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Critical Projects</div>
+            <div class="kpi-value">{critical}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Avg Student Engagement</div>
+            <div class="kpi-value">{avg_engagement}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Overall Health Distribution")
+
+        fig1 = px.pie(
+            project_health,
+            names="overall_health",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig1, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    with c2:
+
+        st.markdown('<div class="section-box">',
+        unsafe_allow_html=True)
+
+        st.markdown("### Device Usage vs Student Engagement")
+
+        fig2 = px.scatter(
+            project_health,
+            x="device_usage_score",
+            y="student_engagement",
+            color="overall_health",
+            size="teacher_engagement",
+            hover_name="school_id",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(fig2, use_container_width=True)
+
+        st.markdown('</div>', unsafe_allow_html=True)
+
+    st.markdown("### Project Health Details")
+
+    st.dataframe(
+        project_health,
+        use_container_width=True
+    )
