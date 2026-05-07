@@ -14,6 +14,107 @@ st.set_page_config(
 )
 
 # =========================================================
+# TOP NAVBAR (PROFESSIONAL HEADER)
+# =========================================================
+
+def go_home():
+    st.session_state["page"] = "Executive Summary"
+
+st.markdown("""
+<style>
+
+/* NAVBAR CONTAINER */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 25px;
+    z-index: 9999;
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.25);
+}
+
+/* LEFT TITLE */
+.nav-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+/* CENTER LINKS */
+.nav-links {
+    display: flex;
+    gap: 18px;
+}
+
+.nav-links span {
+    color: #cbd5e1;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.nav-links span:hover {
+    color: white;
+}
+
+/* RIGHT BUTTONS */
+.nav-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.nav-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+}
+
+.login-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid #475569;
+}
+
+.signup-btn {
+    background: #2563eb;
+    color: white;
+}
+</style>
+
+<div class="navbar">
+
+    <div class="nav-title" onclick="window.location.reload()">
+        Schoolnet Dashboard
+    </div>
+
+    <div class="nav-links">
+        <span onclick="window.location.reload()">Home</span>
+        <span>Analytics</span>
+        <span>Reports</span>
+        <span>Monitoring</span>
+    </div>
+
+    <div class="nav-actions">
+        <button class="nav-btn login-btn">Login</button>
+        <button class="nav-btn signup-btn">Sign Up</button>
+    </div>
+
+</div>
+
+<!-- spacing so content doesn't hide under navbar -->
+<div style="height:70px;"></div>
+
+""", unsafe_allow_html=True)
+
+# =========================================================
 # AUTO REFRESH
 # =========================================================
 
@@ -593,7 +694,7 @@ elif page == "Device Health Monitoring":
     st.markdown("### Device Details")
 
     st.dataframe(device_health)
-    
+
 # =========================================================
 # INTERNET MONITORING
 # =========================================================
