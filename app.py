@@ -171,19 +171,19 @@ SECTION BOX
 # LOAD DATA
 # =========================================================
 
-schools = pd.read_csv("Schools.csv")
-students = pd.read_csv("Students.csv")
-teachers = pd.read_csv("Teachers.csv")
-devices = pd.read_csv("Devices.csv")
-usage = pd.read_csv("Usage.csv")
-tal = pd.read_csv("Tal_Register.csv")
+schools = pd.read_csv("data/Schools.csv")
+students = pd.read_csv("data/Students.csv")
+teachers = pd.read_csv("data/Teachers.csv")
+devices = pd.read_csv("data/Devices.csv")
+usage = pd.read_csv("data/Usage.csv")
+tal = pd.read_csv("data/Tal_Register.csv")
 
-device_health = pd.read_csv("device_health.csv")
-internet = pd.read_csv("internet_uptime.csv")
-complaints = pd.read_csv("complaints.csv")
-project_health = pd.read_csv("project_health.csv")
-monthly_usage = pd.read_csv("monthly_usage.csv")
-donor = pd.read_csv("donor_monitoring.csv")
+device_health = pd.read_csv("data/device_health.csv")
+internet = pd.read_csv("data/internet_uptime.csv")
+complaints = pd.read_csv("data/complaints.csv")
+project_health = pd.read_csv("data/project_health.csv")
+monthly_usage = pd.read_csv("data/monthly_usage.csv")
+donor = pd.read_csv("data/donor_monitoring.csv")
 
 # =========================================================
 # SIDEBAR
