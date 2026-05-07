@@ -1,0 +1,21 @@
+ticket_id,school_id,state,issue_type,priority,status,days_open
+C101,101,Maharashtra,Device Failure,High,Open,4
+C102,102,Delhi,Internet Issue,Medium,Resolved,2
+C103,103,Karnataka,Content Not Loading,High,Open,7
+C104,104,Telangana,Login Failure,Low,Resolved,1
+C105,105,Gujarat,Device Overheating,High,Open,5
+C106,106,Rajasthan,Application Crash,Medium,Resolved,3
+C107,107,Kerala,Slow Internet,Medium,Open,6
+C108,108,Tamil Nadu,Projector Issue,Low,Resolved,2
+C109,109,Uttar Pradesh,Audio Issue,Medium,Open,4
+C110,110,Andhra Pradesh,Screen Damage,High,Open,9
+C111,111,Punjab,Battery Issue,Medium,Resolved,3
+C112,112,Haryana,Charging Failure,High,Open,5
+C113,113,Odisha,Network Error,Medium,Resolved,2
+C114,114,West Bengal,Device Crash,High,Open,8
+C115,115,Jharkhand,Content Sync Error,Low,Resolved,1
+C116,116,Bihar,Internet Failure,High,Open,6
+C117,117,Assam,Software Update Error,Medium,Resolved,2
+C118,118,Madhya Pradesh,Screen Freeze,Medium,Open,4
+C119,119,Tamil Nadu,Device Heating,High,Open,5
+C120,120,Chhattisgarh,Audio Not Working,Low,Resolved,1

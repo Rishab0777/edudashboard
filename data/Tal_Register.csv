@@ -1,0 +1,11 @@
+tal_id,date,school_id,teacher_id,grade,subject,class_strength,students_present,device_used,device_id,time_saved,learning_mode,avg_score_pre,avg_score_post
+1,6/10/2026,101,T1,8,Science,60,52,Yes,D1001,15,Blended,55,68
+2,6/11/2026,102,T2,7,Math,55,48,Yes,D1002,15,Digital,50,65
+3,6/12/2026,103,T3,6,English,50,45,No,,0,Traditional,52,54
+4,6/13/2026,104,T4,9,Science,65,60,Yes,D1003,20,Blended,58,72
+5,6/14/2026,105,T5,8,Math,60,50,Yes,D1004,15,Blended,54,67
+6,6/15/2026,106,T6,7,Science,58,52,Yes,D1005,15,Digital,49,63
+7,6/16/2026,107,T7,6,Math,52,44,No,,0,Traditional,51,52
+8,6/17/2026,108,T8,8,English,60,53,Yes,D1006,20,Digital,56,70
+9,6/18/2026,109,T9,9,Math,66,60,Yes,D1007,20,Blended,60,75
+10,6/19/2026,110,T10,7,Science,57,50,Yes,D1008,15,Digital,53,66

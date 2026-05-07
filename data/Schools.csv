@@ -1,0 +1,21 @@
+school_id,school_name,state,district,location_type,total_students,total_teachers,internet,electricity
+101,Delhi Public School,Delhi,Delhi,Urban,1200,60,Yes,Yes
+102,KV Andheri,Maharashtra,Mumbai,Urban,900,45,Yes,Yes
+103,St Xaviers,Maharashtra,Mumbai,Urban,800,40,Yes,Yes
+104,Ryan International,Delhi,Delhi,Urban,1000,50,Yes,Yes
+105,Modern School,Karnataka,Bangalore,Urban,850,42,Yes,Yes
+106,Green Valley School,Telangana,Hyderabad,Urban,780,38,Yes,Yes
+107,Springfield School,Tamil Nadu,Chennai,Urban,820,39,Yes,Yes
+108,National Public School,Karnataka,Bangalore,Urban,950,48,Yes,Yes
+109,City Model School,Delhi,Delhi,Urban,880,44,Yes,Yes
+110,Sunrise School,Maharashtra,Pune,Urban,770,36,Yes,Yes
+111,Holy Angels School,Kerala,Kochi,Urban,690,34,Yes,Yes
+112,St Marys School,Goa,Panaji,Urban,720,35,Yes,Yes
+113,Little Flower School,Telangana,Warangal,Urban,680,33,Yes,Yes
+114,Oxford School,Uttar Pradesh,Lucknow,Urban,910,46,Yes,Yes
+115,Public Academy,Rajasthan,Jaipur,Urban,860,41,Yes,Yes
+116,Central School,Bihar,Patna,Urban,800,40,Yes,Yes
+117,Scholars School,West Bengal,Kolkata,Urban,830,42,Yes,Yes
+118,Future Kids School,Andhra Pradesh,Vijayawada,Urban,760,37,Yes,Yes
+119,Elite School,Gujarat,Ahmedabad,Urban,870,43,Yes,Yes
+120,Heritage School,Punjab,Chandigarh,Urban,940,47,Yes,Yes

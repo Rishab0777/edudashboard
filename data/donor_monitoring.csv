@@ -1,0 +1,11 @@
+school_id,school_name,state,devices_installed,active_devices,monthly_usage_hours,content_usage_hours,student_improvement,teacher_training_completion,project_health,funding_utilization
+101,Delhi Public School,Delhi,50,47,420,310,15,92,Excellent,88
+102,KV Andheri,Maharashtra,30,28,310,220,14,85,Good,82
+103,St Xaviers,Maharashtra,25,21,250,180,12,80,Good,76
+104,Ryan International,Karnataka,35,32,390,275,18,90,Excellent,91
+105,Narayana School,Telangana,20,16,180,120,10,74,Critical,65
+106,DAV Public School,Gujarat,28,24,290,210,13,81,Good,79
+107,Army Public School,Rajasthan,22,20,240,170,11,77,Good,73
+108,Modern School,Uttar Pradesh,32,29,330,250,16,88,Excellent,87
+109,Vidya Niketan,Kerala,18,14,160,110,9,70,Critical,60
+110,Orchid International,Tamil Nadu,40,36,410,300,17,91,Excellent,90

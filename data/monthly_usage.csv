@@ -1,0 +1,21 @@
+month,state,device_hours,content_hours,active_devices
+Jan,Maharashtra,420,310,48
+Feb,Maharashtra,460,350,52
+Mar,Maharashtra,510,390,57
+Jan,Delhi,380,290,42
+Feb,Delhi,410,320,45
+Mar,Delhi,450,350,49
+Jan,Karnataka,300,220,35
+Feb,Karnataka,330,250,37
+Mar,Karnataka,360,280,39
+Jan,Telangana,340,260,40
+Feb,Telangana,370,290,43
+Mar,Telangana,410,320,46
+Jan,Gujarat,310,230,36
+Feb,Gujarat,340,260,38
+Mar,Gujarat,390,300,42
+Jan,Kerala,360,270,41
+Feb,Kerala,390,300,44
+Mar,Kerala,430,340,48
+Jan,Tamil Nadu,400,310,47
+Feb,Tamil Nadu,440,350,51

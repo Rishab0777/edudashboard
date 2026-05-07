@@ -1,0 +1,21 @@
+device_id,date,usage_hours,app_used,content_used
+D1001,6/1/2026,5,SmartBoard,Electricity
+D1002,6/1/2026,3,Tablet,Math App
+D1003,6/1/2026,6,SmartBoard,Algebra
+D1004,6/1/2026,0,None,None
+D1005,6/1/2026,4,SmartBoard,Science
+D1006,6/1/2026,2,Tablet,Reading
+D1007,6/1/2026,5,SmartBoard,Biology
+D1008,6/1/2026,3,Tablet,English App
+D1009,6/1/2026,6,SmartBoard,Chemistry
+D1010,6/1/2026,1,Tablet,Basic App
+D1011,6/1/2026,4,SmartBoard,Physics
+D1012,6/1/2026,2,Tablet,Reading
+D1013,6/1/2026,5,SmartBoard,Math
+D1014,6/1/2026,3,Tablet,Grammar
+D1015,6/1/2026,6,SmartBoard,Science
+D1016,6/1/2026,2,Tablet,English
+D1017,6/1/2026,0,None,None
+D1018,6/1/2026,3,Tablet,Reading
+D1019,6/1/2026,5,SmartBoard,Biology
+D1020,6/1/2026,4,Tablet,Math

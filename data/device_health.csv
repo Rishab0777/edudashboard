@@ -1,0 +1,21 @@
+device_id,school_id,state,last_active_date,battery_health,storage_used,status,issue
+D101,101,Maharashtra,5/1/2026,92,64,Active,None
+D102,101,Maharashtra,5/1/2026,88,70,Active,None
+D103,102,Delhi,4/29/2026,45,92,Inactive,Battery Failure
+D104,103,Karnataka,5/1/2026,76,58,Active,None
+D105,104,Telangana,4/25/2026,39,95,Inactive,Screen Issue
+D106,105,Tamil Nadu,5/1/2026,81,62,Active,None
+D107,106,Gujarat,4/28/2026,54,85,Inactive,Charging Port
+D108,107,Rajasthan,5/1/2026,90,50,Active,None
+D109,108,Uttar Pradesh,5/1/2026,84,68,Active,None
+D110,109,Kerala,4/27/2026,43,90,Inactive,Software Crash
+D111,110,Andhra Pradesh,5/1/2026,86,60,Active,None
+D112,111,Bihar,4/30/2026,51,88,Inactive,Keyboard Issue
+D113,112,Punjab,5/1/2026,93,45,Active,None
+D114,113,Haryana,5/1/2026,79,66,Active,None
+D115,114,Odisha,4/26/2026,40,91,Inactive,OS Failure
+D116,115,Chhattisgarh,5/1/2026,87,55,Active,None
+D117,116,West Bengal,4/28/2026,58,83,Inactive,Battery Swelling
+D118,117,Jharkhand,5/1/2026,91,48,Active,None
+D119,118,Assam,5/1/2026,85,63,Active,None
+D120,119,Madhya Pradesh,4/27/2026,47,89,Inactive,Display Issue

@@ -1,0 +1,21 @@
+school_id,school_name,state,internet_uptime,avg_speed_mbps,status
+101,Delhi Public School,Delhi,98,45,Stable
+102,KV Andheri,Maharashtra,94,38,Stable
+103,St Xaviers,Maharashtra,72,18,Unstable
+104,Ryan International,Telangana,88,25,Stable
+105,Narayana School,Andhra Pradesh,65,12,Critical
+106,Kendriya Vidyalaya,Gujarat,91,32,Stable
+107,Modern School,Rajasthan,78,20,Unstable
+108,Army Public School,Uttar Pradesh,96,40,Stable
+109,Bharatiya Vidya Bhavan,Kerala,82,22,Stable
+110,DAV Public School,Karnataka,69,14,Critical
+111,GD Goenka,Punjab,93,35,Stable
+112,Cambridge School,Haryana,86,27,Stable
+113,Sunrise Public School,Odisha,74,18,Unstable
+114,National Academy,West Bengal,67,15,Critical
+115,Green Valley School,Jharkhand,89,30,Stable
+116,Bright Future School,Bihar,76,19,Unstable
+117,Oxford School,Assam,95,42,Stable
+118,Global Academy,Madhya Pradesh,84,24,Stable
+119,Heritage School,Tamil Nadu,91,33,Stable
+120,Mount Carmel School,Chhattisgarh,70,16,Critical
