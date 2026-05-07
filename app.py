@@ -1,11 +1,21 @@
 import streamlit as st
 import pandas as pd
 import plotly.express as px
-import os
+
+# =========================================================
+# SAFE IMPORT (AUTO REFRESH OPTIONAL)
+# =========================================================
+
+try:
+    from streamlit_autorefresh import st_autorefresh
+    AUTO_REFRESH = True
+except:
+    AUTO_REFRESH = False
 
 # =========================================================
 # PAGE CONFIG
 # =========================================================
+
 st.set_page_config(
     page_title="Schoolnet Monitoring Platform",
     layout="wide",
@@ -13,45 +23,112 @@ st.set_page_config(
 )
 
 # =========================================================
-# SAFE AUTO REFRESH (OPTIONAL)
+# AUTO REFRESH (SAFE)
 # =========================================================
-try:
-    from streamlit_autorefresh import st_autorefresh
+
+if AUTO_REFRESH:
     st_autorefresh(interval=60000, key="refresh")
-except:
-    pass
 
 # =========================================================
-# BASE PATH (IMPORTANT FOR STREAMLIT CLOUD)
+# CUSTOM CSS
 # =========================================================
-BASE_DIR = os.path.dirname(__file__)
-DATA_DIR = os.path.join(BASE_DIR, "data")
 
-def load_csv(file_name):
-    return pd.read_csv(os.path.join(DATA_DIR, file_name))
+st.markdown("""
+<style>
+html, body, [class*="css"] {
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.stApp {
+    background-color: #F4F6F9;
+}
+
+.block-container {
+    padding-top: 3rem !important;
+    padding-bottom: 1rem;
+}
+
+[data-testid="stSidebar"] {
+    background-color: #111827;
+}
+
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] p {
+    color: white;
+}
+
+.sidebar-title {
+    font-size: 24px;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 18px;
+}
+
+.filter-heading {
+    font-size: 13px;
+    font-weight: 600;
+    color: #D1D5DB;
+    margin-top: 14px;
+    margin-bottom: 8px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    border-left: 5px solid #1F4E79;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+}
+
+.kpi-title {
+    font-size: 13px;
+    color: #6B7280;
+}
+
+.kpi-value {
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.section-box {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+}
+</style>
+""", unsafe_allow_html=True)
 
 # =========================================================
-# LOAD DATA (CASE-SAFE FILE NAMES)
-# IMPORTANT: Match EXACT GitHub filenames
+# SAFE DATA LOADING (FIX FOR STREAMLIT CLOUD)
 # =========================================================
-schools = load_csv("Schools.csv")
-students = load_csv("Students.csv")
-teachers = load_csv("Teachers.csv")
-devices = load_csv("Devices.csv")
-usage = load_csv("Usage.csv")
-tal = load_csv("Tal_Register.csv")
 
-device_health = load_csv("device_health.csv")
-internet = load_csv("internet_uptime.csv")
-complaints = load_csv("complaints.csv")
-project_health = load_csv("project_health.csv")
-monthly_usage = load_csv("monthly_usage.csv")
-donor = load_csv("donor_monitoring.csv")
+@st.cache_data
+def load_csv(path):
+    try:
+        return pd.read_csv(path)
+    except:
+        return pd.DataFrame()
+
+schools = load_csv("data/schools.csv")
+students = load_csv("data/students.csv")
+teachers = load_csv("data/teachers.csv")
+devices = load_csv("data/devices.csv")
+usage = load_csv("data/usage.csv")
+tal = load_csv("data/tal_register.csv")
+
+device_health = load_csv("data/device_health.csv")
+internet = load_csv("data/internet_uptime.csv")
+complaints = load_csv("data/complaints.csv")
+project_health = load_csv("data/project_health.csv")
+monthly_usage = load_csv("data/monthly_usage.csv")
+donor = load_csv("data/donor_monitoring.csv")
 
 # =========================================================
 # SIDEBAR
 # =========================================================
-st.sidebar.title("Schoolnet Platform")
+
+st.sidebar.markdown("<div class='sidebar-title'>Schoolnet Platform</div>", unsafe_allow_html=True)
 
 page = st.sidebar.radio(
     "Navigation",
@@ -66,100 +143,105 @@ page = st.sidebar.radio(
 )
 
 # =========================================================
-# STATE FILTER
+# STATE FILTER (SAFE)
 # =========================================================
-state_options = ["All"] + sorted(schools["state"].dropna().unique())
+
+if "state" in schools.columns:
+    state_options = ["All"] + sorted(schools["state"].dropna().unique().tolist())
+else:
+    state_options = ["All"]
+
 selected_state = st.sidebar.selectbox("Select State", state_options)
 
 # =========================================================
-# FILTER DATA
+# FILTER DATA (SAFE GUARDS)
 # =========================================================
-if selected_state != "All":
-    schools_f = schools[schools["state"] == selected_state]
-    students_f = students[students["school_id"].isin(schools_f["school_id"])]
-    teachers_f = teachers[teachers["school_id"].isin(schools_f["school_id"])]
-    devices_f = devices[devices["school_id"].isin(schools_f["school_id"])]
+
+if selected_state == "All":
+    filtered_schools = schools.copy()
+    filtered_students = students.copy()
+    filtered_devices = devices.copy()
 else:
-    schools_f = schools
-    students_f = students
-    teachers_f = teachers
-    devices_f = devices
+    filtered_schools = schools[schools["state"] == selected_state]
+    filtered_students = students[students["school_id"].isin(filtered_schools["school_id"])]
+    filtered_devices = devices[devices["school_id"].isin(filtered_schools["school_id"])]
 
 # =========================================================
 # HEADER
 # =========================================================
+
 st.title("Schoolnet Integrated Monitoring Dashboard")
-st.markdown("Centralized monitoring platform for schools, students, devices, and learning outcomes")
-st.markdown("---")
+st.write("Centralized monitoring platform for schools, students, teachers, devices, and outcomes")
 
 # =========================================================
-# KPI CALCULATIONS (SAFE)
+# KPI SAFE CALCULATIONS
 # =========================================================
-total_schools = schools_f["school_id"].nunique()
 
-total_students = students_f["total_students"].sum() if "total_students" in students_f.columns else 0
+total_schools = filtered_schools["school_id"].nunique() if not filtered_schools.empty else 0
 
-avg_improvement = round(students_f["improvement"].mean(), 2) if "improvement" in students_f.columns else 0
+total_students = filtered_students["total_students"].sum() if "total_students" in filtered_students else 0
 
-active_devices = len(devices_f[devices_f["status"] == "Active"]) if "status" in devices_f.columns else 0
-inactive_devices = len(devices_f[devices_f["status"] == "Inactive"]) if "status" in devices_f.columns else 0
+avg_improvement = round(filtered_students["improvement"].mean(), 2) if "improvement" in filtered_students else 0
+
+active_devices = len(filtered_devices[filtered_devices.get("status", "") == "Active"])
+inactive_devices = len(filtered_devices[filtered_devices.get("status", "") == "Inactive"])
 
 # =========================================================
 # EXECUTIVE SUMMARY
 # =========================================================
+
 if page == "Executive Summary":
 
     st.subheader("Executive Summary")
 
-    col1, col2, col3, col4 = st.columns(4)
+    c1, c2, c3, c4 = st.columns(4)
 
-    col1.metric("Total Schools", total_schools)
-    col2.metric("Total Students", total_students)
-    col3.metric("Avg Improvement", f"{avg_improvement}%")
-    col4.metric("Active Devices", active_devices)
+    c1.metric("Total Schools", total_schools)
+    c2.metric("Total Students", total_students)
+    c3.metric("Avg Improvement", avg_improvement)
+    c4.metric("Active Devices", active_devices)
 
-    st.markdown("### Student Improvement")
+    if not filtered_students.empty:
+        st.plotly_chart(
+            px.bar(filtered_students, x="school_id", y="improvement"),
+            use_container_width=True
+        )
 
-    if "improvement" in students_f.columns:
-        fig1 = px.bar(students_f, x="school_id", y="improvement")
-        st.plotly_chart(fig1, use_container_width=True)
-
-    st.markdown("### Device Usage Trend")
-
-    if "device_hours" in monthly_usage.columns:
-        fig2 = px.line(monthly_usage, x="month", y="device_hours", color="state")
-        st.plotly_chart(fig2, use_container_width=True)
+    if not monthly_usage.empty:
+        st.plotly_chart(
+            px.line(monthly_usage, x="month", y="device_hours"),
+            use_container_width=True
+        )
 
 # =========================================================
 # DONOR MONITORING
 # =========================================================
+
 elif page == "Donor Monitoring":
 
     st.subheader("Donor Monitoring Dashboard")
 
-    col1, col2, col3, col4 = st.columns(4)
+    if donor.empty:
+        st.warning("No donor data found")
+    else:
+        st.metric("Devices Installed", donor["devices_installed"].sum())
+        st.metric("Active Devices", donor["active_devices"].sum())
+        st.metric("Avg Improvement", round(donor["student_improvement"].mean(), 2))
+        st.metric("Funding Utilization", round(donor["funding_utilization"].mean(), 2))
 
-    col1.metric("Devices Installed", donor["devices_installed"].sum())
-    col2.metric("Active Devices", donor["active_devices"].sum())
-    col3.metric("Improvement", f"{donor['student_improvement'].mean():.1f}%")
-    col4.metric("Funding Utilization", f"{donor['funding_utilization'].mean():.1f}%")
+        st.plotly_chart(
+            px.bar(donor, x="state", y="monthly_usage_hours"),
+            use_container_width=True
+        )
 
-    st.markdown("### State-wise Usage")
+        st.plotly_chart(
+            px.scatter(
+                donor,
+                x="content_usage_hours",
+                y="student_improvement",
+                size="active_devices"
+            ),
+            use_container_width=True
+        )
 
-    fig1 = px.bar(donor, x="state", y="monthly_usage_hours", color="project_health")
-    st.plotly_chart(fig1, use_container_width=True)
-
-    st.markdown("### Learning Impact")
-
-    fig2 = px.scatter(
-        donor,
-        x="content_usage_hours",
-        y="student_improvement",
-        size="active_devices",
-        color="project_health",
-        hover_name="school_name"
-    )
-
-    st.plotly_chart(fig2, use_container_width=True)
-
-    st.dataframe(donor, use_container_width=True)
+        st.dataframe(donor)
