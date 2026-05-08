@@ -1,0 +1,21 @@
+student_id,student_name,school_id,school_name,state,class,section,gender,enrollment_year,enrollment_status
+ST001,Aarav Sharma,101,Delhi Public School,Delhi,8,A,Male,2026,Active
+ST002,Diya Verma,101,Delhi Public School,Delhi,8,A,Female,2026,Active
+ST003,Rohan Mehta,101,Delhi Public School,Delhi,8,A,Male,2026,Active
+ST004,Ananya Singh,101,Delhi Public School,Delhi,8,B,Female,2026,Active
+ST005,Vihaan Kapoor,102,KV Andheri,Maharashtra,9,A,Male,2026,Active
+ST006,Saanvi Rao,102,KV Andheri,Maharashtra,9,A,Female,2026,Active
+ST007,Aditya Jain,102,KV Andheri,Maharashtra,9,B,Male,2026,Active
+ST008,Meera Nair,103,St Xaviers,Maharashtra,8,A,Female,2026,Active
+ST009,Arjun Iyer,103,St Xaviers,Maharashtra,8,A,Male,2026,Active
+ST010,Ishita Patel,103,St Xaviers,Maharashtra,8,B,Female,2026,Active
+ST011,Kabir Shah,104,Ryan International,Karnataka,7,A,Male,2026,Active
+ST012,Priya Reddy,104,Ryan International,Karnataka,7,A,Female,2026,Active
+ST013,Reyansh Das,105,Narayana School,Telangana,10,A,Male,2026,Active
+ST014,Myra Khanna,105,Narayana School,Telangana,10,A,Female,2026,Active
+ST015,Dev Malhotra,106,DAV Public School,Gujarat,8,A,Male,2026,Active
+ST016,Aanya Joshi,106,DAV Public School,Gujarat,8,A,Female,2026,Active
+ST017,Yash Agarwal,107,Army Public School,Rajasthan,9,A,Male,2026,Active
+ST018,Ritika Sen,108,Modern School,Uttar Pradesh,9,A,Female,2026,Active
+ST019,Atharv Pillai,109,Vidya Niketan,Kerala,7,A,Male,2026,Active
+ST020,Kiara Thomas,110,Orchid International,Tamil Nadu,8,A,Female,2026,Active

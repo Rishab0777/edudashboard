@@ -1,11 +1,23 @@
-tal_id,date,school_id,teacher_id,grade,subject,class_strength,students_present,device_used,device_id,time_saved,learning_mode,avg_score_pre,avg_score_post
-1,6/10/2026,101,T1,8,Science,60,52,Yes,D1001,15,Blended,55,68
-2,6/11/2026,102,T2,7,Math,55,48,Yes,D1002,15,Digital,50,65
-3,6/12/2026,103,T3,6,English,50,45,No,,0,Traditional,52,54
-4,6/13/2026,104,T4,9,Science,65,60,Yes,D1003,20,Blended,58,72
-5,6/14/2026,105,T5,8,Math,60,50,Yes,D1004,15,Blended,54,67
-6,6/15/2026,106,T6,7,Science,58,52,Yes,D1005,15,Digital,49,63
-7,6/16/2026,107,T7,6,Math,52,44,No,,0,Traditional,51,52
-8,6/17/2026,108,T8,8,English,60,53,Yes,D1006,20,Digital,56,70
-9,6/18/2026,109,T9,9,Math,66,60,Yes,D1007,20,Blended,60,75
-10,6/19/2026,110,T10,7,Science,57,50,Yes,D1008,15,Digital,53,66
+tal_id,date,school_id,teacher_id,grade,subject,topic,class_strength,students_present,attendance_percent,device_used,device_id,time_saved,learning_mode,avg_score_pre,avg_score_post,learning_improvement
+1,2026-06-10 00:00:00,101,T1,8,Science,Human Eye,60,52,86.7,Yes,D1001,15,Blended,55,68,13
+2,2026-06-11 00:00:00,102,T2,7,Math,Algebra,55,48,87.3,Yes,D1002,15,Digital,50,65,15
+3,2026-06-12 00:00:00,103,T3,6,English,Grammar,50,45,90.0,No,,0,Traditional,52,54,2
+4,2026-06-13 00:00:00,104,T4,9,Science,Electricity,65,60,92.3,Yes,D1003,20,Blended,58,72,14
+5,2026-06-14 00:00:00,105,T5,8,Math,Geometry,60,50,83.3,Yes,D1004,15,Blended,54,67,13
+6,2026-06-15 00:00:00,106,T6,7,Science,Plants,58,52,89.7,Yes,D1005,15,Digital,49,63,14
+7,2026-06-16 00:00:00,107,T7,6,Math,Fractions,52,44,84.6,No,,0,Traditional,51,52,1
+8,2026-06-17 00:00:00,108,T8,8,English,Poetry,60,53,88.3,Yes,D1006,20,Digital,56,70,14
+9,2026-06-18 00:00:00,109,T9,9,Math,Trigonometry,66,60,90.9,Yes,D1007,20,Blended,60,75,15
+10,2026-06-19 00:00:00,110,T10,7,Science,Water Cycle,57,50,87.7,Yes,D1008,15,Digital,53,66,13
+11,2026-06-20 00:00:00,101,T11,8,Math,Mensuration,60,54,90.0,Yes,D1009,18,Blended,57,71,14
+12,2026-06-21 00:00:00,102,T12,6,Science,Photosynthesis,55,49,89.1,Yes,D1010,16,Digital,50,64,14
+13,2026-06-22 00:00:00,103,T13,7,English,Essay Writing,50,42,84.0,No,,0,Traditional,53,55,2
+14,2026-06-23 00:00:00,104,T14,9,Math,Statistics,65,61,93.8,Yes,D1011,22,Blended,59,74,15
+15,2026-06-24 00:00:00,105,T15,8,Science,Force,60,55,91.7,Yes,D1012,17,Digital,55,69,14
+16,2026-06-25 00:00:00,106,T16,7,Math,Integers,58,51,87.9,Yes,D1013,15,Digital,52,65,13
+17,2026-06-26 00:00:00,107,T17,6,Science,Food Chain,52,43,82.7,No,,0,Traditional,50,51,1
+18,2026-06-27 00:00:00,108,T18,8,Math,Linear Equations,60,56,93.3,Yes,D1014,20,Blended,58,73,15
+19,2026-06-28 00:00:00,109,T19,9,Science,Magnetism,66,62,93.9,Yes,D1015,21,Digital,61,76,15
+20,2026-06-29 00:00:00,110,T20,7,English,Story Writing,57,51,89.5,Yes,D1016,14,Digital,54,67,13
+21,2026-05-08 00:00:00,102,T2,7,Math,Reproduction,40,35,87.5,Yes,,15,Blended,50,65,15
+22,2026-05-08,101,T3,9,Math,Integration,40,40,100.0,No,D1012,16,Digital,50,70,20

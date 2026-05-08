@@ -138,8 +138,24 @@ KPI CARDS
     background: white;
     padding: 18px;
     border-radius: 12px;
-    border-left: 5px solid #1F4E79;
+   
     box-shadow: 0px 2px 8px rgba(0,0,0,0.05);
+}
+
+.kpi-blue {
+    border-left: 5px solid #2563EB;
+}
+
+.kpi-green {
+    border-left: 5px solid #16A34A;
+}
+
+.kpi-orange {
+    border-left: 5px solid #EA580C;
+}
+
+.kpi-red {
+    border-left: 5px solid #DC2626;
 }
 
 .kpi-title {
@@ -179,6 +195,20 @@ teachers = pd.read_csv("data/Teachers.csv")
 devices = pd.read_csv("data/Devices.csv")
 usage = pd.read_csv("data/Usage.csv")
 tal = pd.read_csv("data/Tal_Register.csv")
+# =========================================================
+# TAL CALCULATED COLUMNS
+# =========================================================
+
+tal["attendance_percent"] = round(
+    (tal["students_present"] / tal["class_strength"]) * 100,
+    1
+)
+
+tal["learning_improvement"] = (
+    tal["avg_score_post"]
+    -
+    tal["avg_score_pre"]
+)
 
 device_health = pd.read_csv("data/device_health.csv")
 internet = pd.read_csv("data/internet_uptime.csv")
@@ -206,6 +236,10 @@ page = st.sidebar.radio(
     "Navigation",
     [
         "Executive Summary",
+        "TAL Register Entry",
+        "TAL Analytics",
+        "Teacher Efficiency Dashboard",
+        "Attendance & Intervention Impact",
         "Donor Monitoring",
         "Device Health Monitoring",
         "Internet Monitoring",
@@ -230,6 +264,10 @@ selected_state = st.sidebar.selectbox(
     options=state_options,
     index=0,
     label_visibility="collapsed"
+)
+
+selected_date = st.sidebar.date_input(
+    "Select Date"
 )
 
 # =========================================================
@@ -271,12 +309,26 @@ if uploaded_complaints is not None:
 # FILTER DATA
 # =========================================================
 
+tal["date"] = pd.to_datetime(
+    tal["date"],
+    format='mixed',
+    errors='coerce'
+)
+
+invalid_dates = tal[tal["date"].isna()]
+
+if not invalid_dates.empty:
+    st.warning("Some rows contain invalid dates.")
+    st.dataframe(invalid_dates)
+
 if selected_state == "All":
 
     filtered_schools = schools.copy()
     filtered_students = students.copy()
     filtered_teachers = teachers.copy()
     filtered_devices = devices.copy()
+
+    filtered_tal = tal.copy()
 
 else:
 
@@ -300,6 +352,10 @@ else:
         devices["school_id"].isin(
             filtered_schools["school_id"]
         )
+    ]
+
+    filtered_tal = tal[
+    tal["school_id"].isin(filtered_schools["school_id"])
     ]
 
 # =========================================================
@@ -356,7 +412,7 @@ if page == "Executive Summary":
 
     with col1:
         st.markdown(f"""
-        <div class="kpi-card">
+        <div class="kpi-card kpi-blue">
             <div class="kpi-title">Total Schools</div>
             <div class="kpi-value">{total_schools}</div>
         </div>
@@ -443,6 +499,693 @@ if page == "Executive Summary":
         )
 
         st.markdown('</div>', unsafe_allow_html=True)
+
+
+# =========================================================
+# TAL REGISTER ENTRY
+# =========================================================
+
+elif page == "TAL Register Entry":
+
+    st.markdown("## TAL Register Entry Form")
+
+    st.markdown(
+        "Fill classroom activity details below"
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        school_id = st.selectbox(
+            "Select School",
+            tal["school_id"].unique()
+        )
+
+        teacher_id = st.selectbox(
+            "Select Teacher",
+            tal["teacher_id"].unique()
+        )
+
+        grade = st.selectbox(
+            "Select Grade",
+            sorted(tal["grade"].unique())
+        )
+
+        subject = st.selectbox(
+            "Select Subject",
+            tal["subject"].unique()
+        )
+
+        topic = st.text_input(
+            "Topic Being Taught"
+        )
+
+        learning_mode = st.selectbox(
+            "Learning Mode",
+            ["Digital", "Blended", "Traditional"]
+        )
+
+    with col2:
+
+        class_strength = st.number_input(
+            "Class Strength",
+            min_value=1,
+            value=40
+        )
+
+        students_present = st.number_input(
+            "Students Present",
+            min_value=0,
+            value=35
+        )
+
+        device_used = st.selectbox(
+            "Device Used",
+            ["Yes", "No"]
+        )
+
+        device_id = st.text_input(
+            "Device ID"
+        )
+
+        time_saved = st.number_input(
+            "Time Saved (Minutes)",
+            min_value=0,
+            value=15
+        )
+
+    st.markdown("### Assessment Scores")
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        avg_score_pre = st.number_input(
+            "Pre Test Score",
+            min_value=0,
+            max_value=100,
+            value=50
+        )
+
+    with c2:
+
+        avg_score_post = st.number_input(
+            "Post Test Score",
+            min_value=0,
+            max_value=100,
+            value=65
+        )
+
+    if st.button("Submit TAL Entry"):
+
+                # VALIDATION
+
+        if students_present > class_strength:
+            st.error(
+                "Students present cannot exceed class strength"
+            )
+            st.stop()
+
+        if avg_score_post < avg_score_pre:
+            st.warning(
+                "Post score is lower than pre score"
+            )
+
+        attendance_percent = round(
+            (students_present / class_strength) * 100,
+            1
+        )
+
+        learning_improvement = (
+            avg_score_post - avg_score_pre
+        )
+
+        new_entry = pd.DataFrame({
+
+            "tal_id":[tal["tal_id"].max() + 1],
+
+            "date":[pd.Timestamp.today().strftime("%Y-%m-%d")],
+
+            "school_id":[school_id],
+
+            "teacher_id":[teacher_id],
+
+            "grade":[grade],
+
+            "subject":[subject],
+
+            "topic":[topic],
+
+            "class_strength":[class_strength],
+
+            "students_present":[students_present],
+
+            "attendance_percent":[attendance_percent],
+
+            "device_used":[device_used],
+
+            "device_id":[device_id],
+
+            "time_saved":[time_saved],
+
+            "learning_mode":[learning_mode],
+
+            "avg_score_pre":[avg_score_pre],
+
+            "avg_score_post":[avg_score_post],
+
+            "learning_improvement":[learning_improvement]
+
+        })
+
+
+        # ADD ENTRY TO EXISTING CSV
+
+        tal_updated = pd.concat(
+            [tal, new_entry],
+            ignore_index=True
+        )
+
+        tal_updated.to_csv(
+            "data/Tal_Register.csv",
+            index=False
+        )
+
+        st.success(
+            "TAL Entry Submitted & Saved Successfully"
+        )
+
+        st.dataframe(
+            new_entry,
+            use_container_width=True
+        )
+
+# =========================================================
+# TAL ANALYTICS
+# =========================================================
+
+elif page == "TAL Analytics":
+
+    st.markdown("## TAL Analytics Dashboard")
+
+    filtered_tal = filtered_tal.copy()
+
+    if filtered_tal.empty:
+        st.warning("No TAL records found for selected filters/date.")
+        st.stop()
+    # =====================================================
+    # CALCULATIONS USING FILTERED DATA
+    # =====================================================
+
+    tal["attendance_percent"] = round(
+    (
+            tal["students_present"]
+            /
+            tal["class_strength"].replace(0, 1)
+        ) * 100,
+        1
+    )
+
+
+    filtered_tal["learning_improvement"] = (
+        filtered_tal["avg_score_post"]
+        -
+        filtered_tal["avg_score_pre"]
+    )
+
+    avg_attendance = round(
+        filtered_tal["attendance_percent"].mean(),
+        1
+    )
+
+    avg_improvement = round(
+        filtered_tal["learning_improvement"].mean(),
+        1
+    )
+
+    digital_classes = filtered_tal[
+        filtered_tal["device_used"] == "Yes"
+    ].shape[0]
+
+    traditional_classes = filtered_tal[
+        filtered_tal["device_used"] == "No"
+    ].shape[0]
+
+    # =====================================================
+    # KPI CARDS
+    # =====================================================
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Attendance</div>
+            <div class="kpi-value">{avg_attendance}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Learning Improvement</div>
+            <div class="kpi-value">{avg_improvement}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Digital Classes</div>
+            <div class="kpi-value">{digital_classes}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Traditional Classes</div>
+            <div class="kpi-value">{traditional_classes}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # =====================================================
+    # CHARTS
+    # =====================================================
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Subject-wise Learning Improvement")
+
+        fig1 = px.bar(
+            filtered_tal,
+            x="subject",
+            y="learning_improvement",
+            color="learning_mode",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig1,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    with c2:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Attendance by Grade")
+
+        fig2 = px.line(
+            filtered_tal,
+            x="grade",
+            y="attendance_percent",
+            markers=True,
+            color="learning_mode",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig2,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    # =====================================================
+    # SEARCH + TABLE
+    # =====================================================
+
+    st.markdown("### TAL Register Analytics")
+
+    search_teacher = st.text_input(
+        "Search Teacher ID"
+    )
+
+    searched_tal = filtered_tal[
+        filtered_tal["teacher_id"]
+        .astype(str)
+        .str.contains(
+            search_teacher,
+            case=False,
+            na=False
+        )
+    ]
+
+    st.dataframe(
+        searched_tal,
+        use_container_width=True
+    )
+
+    # =====================================================
+    # DOWNLOAD REPORT
+    # =====================================================
+
+    csv = searched_tal.to_csv(index=False).encode('utf-8')
+
+    st.download_button(
+        label="Download TAL Report",
+        data=csv,
+        file_name="tal_report.csv",
+        mime="text/csv"
+    )
+
+# =========================================================
+# TEACHER EFFICIENCY DASHBOARD
+# =========================================================
+
+elif page == "Teacher Efficiency Dashboard":
+
+    st.markdown("## Teacher Efficiency Dashboard")
+
+    teacher_efficiency = tal.groupby(
+        "teacher_id"
+    ).agg({
+
+        "time_saved":"mean",
+        "attendance_percent":"mean",
+        "avg_score_post":"mean"
+
+    }).reset_index()
+
+    teacher_efficiency["efficiency_score"] = round(
+
+        (
+            teacher_efficiency["time_saved"] * 0.3
+            +
+            teacher_efficiency["attendance_percent"] * 0.4
+            +
+            teacher_efficiency["avg_score_post"] * 0.3
+        ),
+
+        1
+
+    )
+
+    avg_score = round(
+        teacher_efficiency[
+            "efficiency_score"
+        ].mean(),
+        1
+    )
+
+    if not teacher_efficiency.empty:
+        best_teacher = teacher_efficiency.sort_values(
+            by="efficiency_score",
+            ascending=False
+        ).iloc[0]["teacher_id"]
+    else:
+        best_teacher = "N/A"
+
+    total_teachers = teacher_efficiency.shape[0]
+
+    avg_time_saved = round(
+        teacher_efficiency["time_saved"].mean(),
+        1
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Efficiency</div>
+            <div class="kpi-value">{avg_score}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Top Teacher</div>
+            <div class="kpi-value">{best_teacher}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Teachers Evaluated</div>
+            <div class="kpi-value">{total_teachers}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Avg Time Saved</div>
+            <div class="kpi-value">{avg_time_saved}m</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+        # LOW PERFORMANCE ALERT
+
+    low_perf = tal[
+        tal["learning_improvement"] < 5
+    ]
+
+    if low_perf.shape[0] > 0:
+
+        st.error(
+            f"{low_perf.shape[0]} low performing classes need intervention"
+        )
+
+        st.dataframe(
+            low_perf[
+                [
+                    "school_id",
+                    "teacher_id",
+                    "subject",
+                    "learning_improvement"
+                ]
+            ],
+            use_container_width=True
+        )
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Teacher Efficiency Scores")
+
+        fig1 = px.bar(
+            teacher_efficiency,
+            x="teacher_id",
+            y="efficiency_score",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig1,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    with c2:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Time Saved by Teachers")
+
+        fig2 = px.scatter(
+            teacher_efficiency,
+            x="attendance_percent",
+            y="avg_score_post",
+            size="time_saved",
+            hover_name="teacher_id",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig2,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown("### Teacher Performance Table")
+
+    st.dataframe(
+        teacher_efficiency,
+        use_container_width=True
+    )
+
+# =========================================================
+# ATTENDANCE & INTERVENTION IMPACT
+# =========================================================
+
+elif page == "Attendance & Intervention Impact":
+
+    st.markdown(
+        "## Attendance & Intervention Impact"
+    )
+
+    tal["improvement"] = (
+        tal["avg_score_post"]
+        -
+        tal["avg_score_pre"]
+    )
+
+    avg_pre = round(
+        tal["avg_score_pre"].mean(),
+        1
+    )
+
+    avg_post = round(
+        tal["avg_score_post"].mean(),
+        1
+    )
+
+    avg_growth = round(
+        tal["improvement"].mean(),
+        1
+    )
+
+    avg_attendance = round(
+        tal["attendance_percent"].mean(),
+        1
+    )
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    with col1:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Pre Score</div>
+            <div class="kpi-value">{avg_pre}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col2:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Average Post Score</div>
+            <div class="kpi-value">{avg_post}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col3:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Learning Growth</div>
+            <div class="kpi-value">{avg_growth}</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with col4:
+        st.markdown(f"""
+        <div class="kpi-card">
+            <div class="kpi-title">Attendance Rate</div>
+            <div class="kpi-value">{avg_attendance}%</div>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    c1, c2 = st.columns(2)
+
+    with c1:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Pre vs Post Scores")
+
+        fig1 = px.bar(
+            tal,
+            x="subject",
+            y=["avg_score_pre","avg_score_post"],
+            barmode="group",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig1,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    with c2:
+
+        st.markdown(
+            '<div class="section-box">',
+            unsafe_allow_html=True
+        )
+
+        st.markdown("### Attendance vs Improvement")
+
+        fig2 = px.scatter(
+            tal,
+            x="attendance_percent",
+            y="improvement",
+            color="learning_mode",
+            size="time_saved",
+            hover_name="subject",
+            template="plotly_white"
+        )
+
+        st.plotly_chart(
+            fig2,
+            use_container_width=True
+        )
+
+        st.markdown(
+            '</div>',
+            unsafe_allow_html=True
+        )
+
+    st.markdown("### Intervention Impact Data")
+
+    st.dataframe(
+        tal,
+        use_container_width=True
+    )
+
+
 
 # =========================================================
 # DONOR MONITORING
