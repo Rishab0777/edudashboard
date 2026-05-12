@@ -698,12 +698,109 @@ elif page == "TAL Analytics":
     # CALCULATIONS USING FILTERED DATA
     # =====================================================
 
+    # =========================================================
+    # CENTRALIZED KPI CALCULATIONS
+    # =========================================================
+
+    # ---------------------------------------------------------
+    # ATTENDANCE PERCENTAGE
+    # Formula:
+    # (Students Present / Class Strength) * 100
+    # ---------------------------------------------------------
+
     tal["attendance_percent"] = round(
-    (
+        (
             tal["students_present"]
             /
             tal["class_strength"].replace(0, 1)
         ) * 100,
+        1
+    )
+
+    # ---------------------------------------------------------
+    # LEARNING IMPROVEMENT
+    # Formula:
+    # Post Test Score - Pre Test Score
+    # ---------------------------------------------------------
+
+    tal["learning_improvement"] = round(
+        tal["avg_score_post"]
+        -
+        tal["avg_score_pre"],
+        1
+    )
+
+    # ---------------------------------------------------------
+    # TEACHER EFFICIENCY SCORE
+    # Weighted Formula:
+    #
+    # 30% -> Time Saved
+    # 40% -> Attendance
+    # 30% -> Student Performance
+    #
+    # Formula:
+    #
+    # (Time Saved * 0.3)
+    # + (Attendance Percent * 0.4)
+    # + (Avg Post Score * 0.3)
+    # ---------------------------------------------------------
+
+    teacher_efficiency_base = tal.groupby(
+        "teacher_id"
+    ).agg({
+
+        "time_saved": "mean",
+        "attendance_percent": "mean",
+        "avg_score_post": "mean"
+
+    }).reset_index()
+
+    teacher_efficiency_base["efficiency_score"] = round(
+
+        (
+            teacher_efficiency_base["time_saved"] * 0.3
+            +
+            teacher_efficiency_base["attendance_percent"] * 0.4
+            +
+            teacher_efficiency_base["avg_score_post"] * 0.3
+        ),
+
+        1
+    )
+
+    # ---------------------------------------------------------
+    # LOW PERFORMANCE FLAG
+    # Logic:
+    # Learning Improvement < 5
+    # ---------------------------------------------------------
+
+    tal["low_performance_flag"] = tal[
+        "learning_improvement"
+    ] < 5
+
+    # ---------------------------------------------------------
+    # DIGITAL CLASS FLAG
+    # Logic:
+    # Device Used = Yes
+    # ---------------------------------------------------------
+
+    tal["digital_class_flag"] = tal[
+        "device_used"
+    ] == "Yes"
+
+    # ---------------------------------------------------------
+    # INTERVENTION IMPACT SCORE
+    #
+    # Formula:
+    # Post Score - Pre Score
+    #
+    # Higher value means better intervention impact
+    # ---------------------------------------------------------
+
+    tal["intervention_impact_score"] = round(
+        tal["avg_score_post"]
+        -
+        tal["avg_score_pre"],
         1
     )
 
